@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AA3447C6254D812900AD21E4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3447C5254D812900AD21E4 /* main.cpp */; };
-		AA3447CF254D81D500AD21E4 /* FullGridInterpolation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3447CD254D81D500AD21E4 /* FullGridInterpolation.cpp */; };
+		AA3447CF254D81D500AD21E4 /* OneDWave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3447CD254D81D500AD21E4 /* OneDWave.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,8 +26,8 @@
 /* Begin PBXFileReference section */
 		AA3447C2254D812900AD21E4 /* FullGridInterpolation */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FullGridInterpolation; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA3447C5254D812900AD21E4 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		AA3447CD254D81D500AD21E4 /* FullGridInterpolation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FullGridInterpolation.cpp; sourceTree = "<group>"; };
-		AA3447CE254D81D500AD21E4 /* FullGridInterpolation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FullGridInterpolation.h; sourceTree = "<group>"; };
+		AA3447CD254D81D500AD21E4 /* OneDWave.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OneDWave.cpp; sourceTree = "<group>"; };
+		AA3447CE254D81D500AD21E4 /* OneDWave.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneDWave.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,8 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				AA3447C5254D812900AD21E4 /* main.cpp */,
-				AA3447CD254D81D500AD21E4 /* FullGridInterpolation.cpp */,
-				AA3447CE254D81D500AD21E4 /* FullGridInterpolation.h */,
+				AA3447CD254D81D500AD21E4 /* OneDWave.cpp */,
+				AA3447CE254D81D500AD21E4 /* OneDWave.h */,
 			);
 			path = FullGridInterpolation;
 			sourceTree = "<group>";
@@ -124,7 +124,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA3447C6254D812900AD21E4 /* main.cpp in Sources */,
-				AA3447CF254D81D500AD21E4 /* FullGridInterpolation.cpp in Sources */,
+				AA3447CF254D81D500AD21E4 /* OneDWave.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

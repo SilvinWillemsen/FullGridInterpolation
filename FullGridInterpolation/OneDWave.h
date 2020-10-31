@@ -1,13 +1,13 @@
 //
-//  FullGridInterpolation.hpp
-//  FullGridInterpolation
+//  OneDWave.hpp
+//  OneDWave
 //
 //  Created by Silvin Willemsen on 31/10/2020.
 //  Copyright © 2020 Silvin Willemsen. All rights reserved.
 //
 
-#ifndef FullGridInterpolation_h
-#define FullGridInterpolation_h
+#ifndef OneDWave_h
+#define OneDWave_h
 
 #include <stdio.h>
 #include <iostream>
@@ -15,15 +15,15 @@
 #include <vector>
 #include "math.h"
 
-class FullGridInterpolation
+class OneDWave
 {
 public:
-    FullGridInterpolation (int startN, int endN,
-                           double fs, double outLength,
-                           double excitationLoc, double excitationWidth,
-                           double outputLocStart);
+    OneDWave (int startN, int endN,
+               double fs, double outLength,
+               double excitationLoc, double excitationWidth,
+               double outputLocStart);
     
-    ~FullGridInterpolation();
+    ~OneDWave();
     
     void calculate();
 
@@ -31,7 +31,10 @@ public:
     void updateStates();
     
     void retrieveState();
+    void fullGridInterpolation();
+    
 private:
+    int sampleAtWhichToRetrieveState;
     int startN, endN, lengthSound;
     double fs, outLength, excitationLoc, excitationWidth, outputLocStart;
     double startC, endC, cDiff;
@@ -45,6 +48,8 @@ private:
     std::vector<double> out;
     
     std::ofstream stateAt;
+    int curPercentage = 0;
+    int test = 0; 
 };
 
-#endif /* FullGridInterpolation_h */
+#endif /* OneDWave_h */
