@@ -6,6 +6,11 @@
 //  Copyright © 2020 Silvin Willemsen. All rights reserved.
 //
 
+/*
+ Implementation of the 1D wave equation with changing parameters and full grid interpolation. The most important thing to note is that the boundary points are not included in the implementation. So u[1][0] is u_1^n and u[1][N-2] is u_{N-1}^n. Or, in other words there are N-1 moving points ranging from idx = 0 : N-2.
+ This also means that in the cubic interpolation we start at idx = -1 so that we can reach a point before the first described point.
+ */
+
 #ifndef OneDWave_h
 #define OneDWave_h
 
@@ -25,14 +30,17 @@ public:
     
     ~OneDWave();
     
-    void calculate();
-
     void scheme();
     void updateStates();
     
-    void retrieveState();
-    void fullGridInterpolation();
+    void retrieveState (int end);
+    void retrieveOutput (int indexFromBoundary, bool fromRightBoundary);
+
+    void fullGridInterpolation (bool isNGrowing);
+    double cubicInterpolation (double* uVec, int l, double alph);
+    void recalculateCoeffs (int n);
     
+    void setRetrievingState (bool set) { retrievingState = set; };
 private:
     int sampleAtWhichToRetrieveState;
     int startN, endN, lengthSound;
@@ -42,14 +50,26 @@ private:
     int N, NPrev, outLoc;
     double k, h, c, lambdaSq;
     double B0, B1, C;
-    std::vector<std::vector<double>> uVecs;
+    
+    std::vector<double> emptyVector;
+    std::shared_ptr<std::vector<std::vector<double>>> uVecs1;
+    std::shared_ptr<std::vector<std::vector<double>>> uVecs2;
+
     std::vector<double*> u;
     
     std::vector<double> out;
     
     std::ofstream stateAt;
+    std::ofstream plotIdx;
+    std::ofstream output;
+
     int curPercentage = 0;
-    int test = 0; 
+    int test = 0;
+    
+    bool pointingAtuVecs1;
+    int curPlotIdx = 1;
+    
+    bool retrievingState = true;
 };
 
 #endif /* OneDWave_h */

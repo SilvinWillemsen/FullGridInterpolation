@@ -17,10 +17,15 @@ void loop (OneDWave& oneDWave, int start, int end, int lengthSound)
     for (int n = start; n < end; ++n)
     {
         
-        
+        oneDWave.recalculateCoeffs (n);
         oneDWave.scheme();
+        oneDWave.retrieveOutput (5, true);
         oneDWave.updateStates();
-        
+        if (n == 100)
+        {
+            oneDWave.setRetrievingState (false);
+            std::cout << "wait" << std::endl;
+        }
         test = n * 100 / static_cast<double>(lengthSound - 1);
         if (test > curPercentage)
         {
@@ -33,17 +38,18 @@ void loop (OneDWave& oneDWave, int start, int end, int lengthSound)
 int main(int argc, const char * argv[]) {
     // insert code here...
     
-    double fs = 4410000;
+    double fs = 441000;
     double outLength = 0.5;
     double lengthSound = fs * outLength;
     
     OneDWave oneDWave (30, 30, fs, outLength, 0.25, 0.2, 0.9);
     int sampleAtWhichToRetrieveState = 1000;
     
-    loop (oneDWave, 0, sampleAtWhichToRetrieveState, lengthSound);
-    oneDWave.retrieveState();
-    loop (oneDWave, sampleAtWhichToRetrieveState, lengthSound, lengthSound);
+//    loop (oneDWave, 0, sampleAtWhichToRetrieveState, lengthSound);
+//    oneDWave.retrieveState();
+//    loop (oneDWave, sampleAtWhichToRetrieveState, lengthSound, lengthSound);
 
-    
+    loop (oneDWave, 0, lengthSound, lengthSound);
+
     return 0;
 }
