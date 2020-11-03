@@ -11,11 +11,13 @@
 OneDWave::OneDWave (int startN, int endN,
                   double fs, double outLength,
                   double excitationLoc, double excitationWidth,
-                  double outputLocStart) :   startN (startN), endN (endN),
+                  double outputLocStart, InterpolationType interpolationType) :
+    startN (startN), endN (endN),
     fs (fs), outLength (outLength),
     excitationLoc (excitationLoc),
     excitationWidth(excitationWidth),
-    outputLocStart (outputLocStart)
+    outputLocStart (outputLocStart),
+    interpolationType (interpolationType)
 {
     lengthSound = outLength * fs;
     
@@ -32,24 +34,19 @@ OneDWave::OneDWave (int startN, int endN,
     NPrev = N;
     lambdaSq = c * c * k * k / (h * h);
 
-    emptyVector.resize (std::max(startN, endN)-1, -1);
-    uVecs1 = std::make_shared<std::vector<std::vector<double>>> (3, emptyVector);
-    uVecs2 = std::make_shared<std::vector<std::vector<double>>> (3, emptyVector);
-
-//    uVecs1.resize (3, emptyVector);
-//    uVecs2.resize (3, emptyVector);
-
+    emptyVector.resize (std::max(fs / 44100.0 * startN, fs / 44100.0 * endN)-1, 0);
+    uVecs1.resize (3, emptyVector);
+    uVecs2.resize (3, emptyVector);
     u.resize(3, nullptr);
-//    auto test = uVecs1.get()[0][0][0];
-//    auto test = uVecs1.get()[0][0];
-    for (int i = 0; i < uVecs1->size(); ++i)
-        u[i] = &uVecs1.get()[0][i][0];
+    
+    for (int i = 0; i < uVecs1.size(); ++i)
+        u[i] = &uVecs1[i][0];
     
     pointingAtuVecs1 = true;
     int loc = excitationLoc * N;
     int width = excitationWidth * N;
-    int raisedCosStart = floor (loc - width  / 2) - 1;
-    int raisedCosEnd = floor (loc + width / 2) - 1;
+    int raisedCosStart = floor (loc - width * 0.5) - 1;
+    int raisedCosEnd = floor (loc + width * 0.5) - 1;
     
     for (int i = raisedCosStart; i <= raisedCosEnd; ++i)
     {
@@ -64,10 +61,16 @@ OneDWave::OneDWave (int startN, int endN,
     B1 = lambdaSq;
     C = -1.0;
     
+    
     // file writing
     stateAt.open ("stateAt.csv");
     plotIdx.open ("plotIdx.csv");
     output.open ("output.csv");
+    cSave.open ("cSave.csv");
+    NSave.open ("NSave.csv");
+    NChange.open ("NChange.csv");
+    lambdaSqSave.open ("lambdaSqSave.csv");
+
 
 }
 
@@ -76,7 +79,42 @@ OneDWave::~OneDWave()
     stateAt.close();
     plotIdx.close();
     output.close();
+    cSave.close();
+    NSave.close();
+    NChange.close();
+    lambdaSqSave.close();
+}
 
+void OneDWave::recalculateCoeffs (int n)
+{
+    c = startC - n / static_cast<double> (lengthSound-1) * cDiff;
+    if (interpolationType != none)
+    {
+        h = c * k;
+        N = floor (1.0 / h);
+        h = 1 / static_cast<double> (N);
+    }
+    lambdaSq = 0.999 * c * c * k * k / (h * h);
+    lambdaSqSave << lambdaSq << ";\n";
+    cSave << c << ";\n";
+    NSave << N << ";\n";
+    
+    //    if (n % int (fs / 44.10) == 0)
+    //        retrieveState (N);
+    
+    if (N != NPrev)
+    {
+        NChange << NPrev << ", " << N << ";\n";
+        if (abs(N - NPrev) > 1)
+            std::cout << "too fast..?" << std::endl;
+        
+        fullGridInterpolation (N > NPrev);
+    }
+    NPrev = N;
+    
+    B0 = 2.0 - 2.0 * lambdaSq;
+    B1 = lambdaSq;
+    C = -1.0;
 }
 
 void OneDWave::scheme()
@@ -92,8 +130,6 @@ void OneDWave::scheme()
     u[0][0] = B0 * u[1][0] + B1 * u[1][1] + C * u[2][0];
     u[0][N-2] = B0 * u[1][N-2] + B1 * u[1][N-3] + C * u[2][N-2];
 
-    if (retrievingState)
-        retrieveState (N);
 }
 
 
@@ -103,21 +139,6 @@ void OneDWave::updateStates()
     u[2] = u[1];
     u[1] = u[0];
     u[0] = uTmp;
-}
-
-void OneDWave::retrieveOutput (int indexFromBoundary, bool fromRightBoundary)
-{
-    output << u[1][fromRightBoundary ? N-1-indexFromBoundary : indexFromBoundary - 1] << ";\n";
-}
-
-void OneDWave::retrieveState (int end)
-{
-    plotIdx << curPlotIdx << ";\n";
-    for (int l = 0; l < end-1; ++l)
-        stateAt << std::to_string(u[1][l]) << ";\n";
-    curPlotIdx += end-2;
-    plotIdx << curPlotIdx << ";\n";
-    ++curPlotIdx;
 }
 
 void OneDWave::fullGridInterpolation (bool isNGrowing)
@@ -130,41 +151,66 @@ void OneDWave::fullGridInterpolation (bool isNGrowing)
 
         if (pointingAtuVecs1)
         {
-            uVecs2.get()[0].resize (3, emptyVector);
-
-            for (int l = 0; l < N; ++l)
-            {
-//                std::cout << m << ", " << alph << std::endl;
-                uVecs2.get()[0][1][l] = cubicInterpolation (u[1], floor(m), alph);
-                uVecs2.get()[0][2][l] = cubicInterpolation (u[2], floor(m), alph);
-                m += alphSpace;
-                alph += alphSpace;
-                if (alph >= 1)
-                    alph -= 1;
-            }
-//            uVecs2[1][0] = 0;
-//            uVecs2[1][N-1] = 0;
-//            uVecs2[2][0] = 0;
-//            uVecs2[2][N-1] = 0;
+            uVecs2.resize (3, std::vector<double> (std::max(fs / 44100.0 * startN, fs / 44100.0 * endN)-1, 0));
             
-            for (int i = 0; i < uVecs2->size(); ++i)
-                u[i] = &uVecs2.get()[0][i][0];
+            if (interpolationType == linear)
+            {
+                for (int l = 0; l < N-1; ++l)
+                {
+                    uVecs2[1][l] = linearInterpolation (u[1], floor(m), alph);
+                    uVecs2[2][l] = linearInterpolation (u[2], floor(m), alph);
+                    m += alphSpace;
+                    alph += alphSpace;
+                    if (alph >= 1)
+                        alph -= 1;
+                }
+            }
+            else if (interpolationType == cubic)
+            {
+                for (int l = 0; l < N-1; ++l)
+                {
+                    uVecs2[1][l] = cubicInterpolation (u[1], floor(m), alph);
+                    uVecs2[2][l] = cubicInterpolation (u[2], floor(m), alph);
+                    m += alphSpace;
+                    alph += alphSpace;
+                    if (alph >= 1)
+                        alph -= 1;
+                }
+            }
+            
+            for (int i = 0; i < uVecs2.size(); ++i)
+                u[i] = &uVecs2[i][0];
 
         } else {
-            uVecs1.get()[0].resize (3, emptyVector);
-
-            for (int l = 0; l < N; ++l)
+            uVecs1.resize (3, std::vector<double> (std::max(fs / 44100.0 * startN, fs / 44100.0 * endN)-1, 0));
+            
+            if (interpolationType == linear)
             {
-//                std::cout << m << ", " << alph << std::endl;
-                uVecs1.get()[0][1][l] = cubicInterpolation (u[1], floor(m), alph);
-                uVecs1.get()[0][2][l] = cubicInterpolation (u[2], floor(m), alph);
+            for (int l = 0; l < N-1; ++l)
+            {
+                uVecs1[1][l] = linearInterpolation (u[1], floor(m), alph);
+                uVecs1[2][l] = linearInterpolation (u[2], floor(m), alph);
                 m += alphSpace;
                 alph += alphSpace;
                 if (alph >= 1)
                     alph -= 1;
             }
-            for (int i = 0; i < uVecs1->size(); ++i)
-                u[i] = &uVecs1.get()[0][i][0];
+            }
+            
+            if (interpolationType == cubic)
+            {
+                for (int l = 0; l < N-1; ++l)
+                {
+                    uVecs1[1][l] = cubicInterpolation (u[1], floor(m), alph);
+                    uVecs1[2][l] = cubicInterpolation (u[2], floor(m), alph);
+                    m += alphSpace;
+                    alph += alphSpace;
+                    if (alph >= 1)
+                        alph -= 1;
+                }
+            }
+            for (int i = 0; i < uVecs1.size(); ++i)
+                u[i] = &uVecs1[i][0];
         }
         
         
@@ -175,27 +221,15 @@ void OneDWave::fullGridInterpolation (bool isNGrowing)
 
 }
 
-void OneDWave::recalculateCoeffs (int n)
+double OneDWave::linearInterpolation (double* uVec, int l, double alph)
 {
-    c = startC - n / static_cast<double> (lengthSound-1) * cDiff;
-    h = c * k;
-    N = floor (1.0 / h);
-    h = 1 / static_cast<double> (N);
-    lambdaSq = c * c * k * k / (h * h);
-    if (N != NPrev)
-    {
-        retrieveState (NPrev);
-        fullGridInterpolation (N > NPrev);
-        retrieveState (N);
-//        stateAt.close();
-
-    }
-    NPrev = N;
-
+    if (l == -1)
+        return alph * uVec[l+1];
+    else if (l == NPrev-2)
+        return (1.0 - alph) * uVec[l];
     
-    B0 = 2.0 - 2.0 * lambdaSq;
-    B1 = lambdaSq;
-    C = -1.0;
+    return (1.0 - alph) * uVec[l] + alph * uVec[l+1];
+    
 }
 
 double OneDWave::cubicInterpolation (double* uVec, int l, double alph)
@@ -207,19 +241,24 @@ double OneDWave::cubicInterpolation (double* uVec, int l, double alph)
 //        + uVec[l] * ((alph - 1) * (alph + 1) * (alph - 2)) * 0.5 // is 0 anyway
         + uVec[l + 1] * (alph * (alph + 1) * (alph - 2)) * -0.5
         + uVec[l + 2] * (alph * (alph + 1) * (alph - 1)) / 6.0;
-    } else if (l == 0)
+    }
+    else if (l == 0)
     {
         return // uVec[l - 1] * (alph * (alph - 1) * (alph - 2)) / -6.0 // is 0 anyway
-        uVec[l] * ((alph - 1) * (alph + 1) * (alph - 2)) * 0.5
-        + uVec[l + 1] * (alph * (alph + 1) * (alph - 2)) * -0.5
-        + uVec[l + 2] * (alph * (alph + 1) * (alph - 1)) / 6.0;
-    } else if (l == N-2) {
+            uVec[l] * ((alph - 1) * (alph + 1) * (alph - 2)) * 0.5
+            + uVec[l + 1] * (alph * (alph + 1) * (alph - 2)) * -0.5
+            + uVec[l + 2] * (alph * (alph + 1) * (alph - 1)) / 6.0;
+    }
+    else if (l == NPrev-3)
+    {
         return uVec[l - 1] * (alph * (alph - 1) * (alph - 2)) / -6.0
-        + uVec[l] * ((alph - 1) * (alph + 1) * (alph - 2)) * 0.5
-        + uVec[l + 1] * (alph * (alph + 1) * (alph - 2)) * -0.5;
+            + uVec[l] * ((alph - 1) * (alph + 1) * (alph - 2)) * 0.5
+            + uVec[l + 1] * (alph * (alph + 1) * (alph - 2)) * -0.5;
 //        + uVec[l + 2] * (alph * (alph + 1) * (alph - 1)) / 6.0; // is 0 anyway
-    }  else if (l == N-1) {
-            return uVec[l - 1] * (alph * (alph - 1) * (alph - 2)) / -6.0
+    }
+    else if (l == NPrev-2)
+    {
+        return uVec[l - 1] * (alph * (alph - 1) * (alph - 2)) / -6.0
             + uVec[l] * ((alph - 1) * (alph + 1) * (alph - 2)) * 0.5
 //            + uVec[l + 1] * (alph * (alph + 1) * (alph - 2)) * -0.5;// is 0 anyway
              - uVec[l] * (alph * (alph + 1) * (alph - 1)) / 6.0; // simply supported boundary
@@ -243,3 +282,20 @@ double OneDWave::cubicInterpolation (double* uVec, int l, double alph)
     //    std::cout << val - val1 << std::endl;
 //    return val;
 }
+
+
+void OneDWave::retrieveOutput (int indexFromBoundary, bool fromRightBoundary)
+{
+    output << u[1][fromRightBoundary ? (N-1-indexFromBoundary) : (indexFromBoundary - 1)] << ";\n";
+}
+
+void OneDWave::retrieveState (int end)
+{
+    plotIdx << curPlotIdx << ";\n";
+    for (int l = 0; l < end-1; ++l)
+        stateAt << std::to_string(u[1][l]) << ";\n";
+    curPlotIdx += end-2;
+    plotIdx << curPlotIdx << ";\n";
+    ++curPlotIdx;
+}
+

@@ -7,10 +7,12 @@
 //
 
 #include "OneDWave.h"
+#include "OneDWaveDynamic.h"
+
 #include <iostream>
 #include <fstream>
 
-void loop (OneDWave& oneDWave, int start, int end, int lengthSound)
+void loop (OneDWave& oneDWave, int start, int end, int lengthSound, double fs)
 {
     int curPercentage = start / static_cast<double> (lengthSound - 1);
     double test = 0;
@@ -19,13 +21,9 @@ void loop (OneDWave& oneDWave, int start, int end, int lengthSound)
         
         oneDWave.recalculateCoeffs (n);
         oneDWave.scheme();
-        oneDWave.retrieveOutput (5, true);
+        oneDWave.retrieveOutput (fs / 44100.0 * 5, true);
         oneDWave.updateStates();
-        if (n == 100)
-        {
-            oneDWave.setRetrievingState (false);
-            std::cout << "wait" << std::endl;
-        }
+        
         test = n * 100 / static_cast<double>(lengthSound - 1);
         if (test > curPercentage)
         {
@@ -35,21 +33,47 @@ void loop (OneDWave& oneDWave, int start, int end, int lengthSound)
     }
 }
 
+void loop (OneDWaveDynamic& oneDWave, int start, int end, int lengthSound, double fs)
+{
+    int curPercentage = start / static_cast<double> (lengthSound - 1);
+    double test = 0;
+    for (int n = start; n < end; ++n)
+    {
+        if (oneDWave.simulationStopped())
+            return;
+        oneDWave.recalculateCoeffs (n);
+        oneDWave.scheme();
+        oneDWave.retrieveOutput (fs / 44100.0 * 5, true);
+        oneDWave.updateStates();
+        
+        test = n * 100 / static_cast<double>(lengthSound - 1);
+        if (test > curPercentage)
+        {
+            std::cout << curPercentage << std::endl;
+            ++curPercentage;
+        }
+        
+    }
+}
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     
-    double fs = 441000;
-    double outLength = 0.5;
+    double fs = 44100;
+    double outLength = 3;
     double lengthSound = fs * outLength;
+    double NStart = 30.0;
+    double NEnd = 30.99;
+    std::ofstream curFs;
+    curFs.open ("curFs.csv");
+    curFs << fs;
+    curFs.close();
+    OneDWave oneDWaveInterpol (NStart, NEnd, fs, outLength, 0.25, 0.2, 0.9, linear);
     
-    OneDWave oneDWave (30, 30, fs, outLength, 0.25, 0.2, 0.9);
-    int sampleAtWhichToRetrieveState = 1000;
-    
-//    loop (oneDWave, 0, sampleAtWhichToRetrieveState, lengthSound);
-//    oneDWave.retrieveState();
-//    loop (oneDWave, sampleAtWhichToRetrieveState, lengthSound, lengthSound);
+    OneDWaveDynamic oneDWaveDynamic (NStart, NEnd, fs, outLength, 0.25, 0.2, 0.9);
 
-    loop (oneDWave, 0, lengthSound, lengthSound);
+//    loop (oneDWaveInterpol, 0, lengthSound, lengthSound, fs);
+    loop (oneDWaveDynamic, 0, lengthSound, lengthSound, fs);
 
     return 0;
 }

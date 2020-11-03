@@ -20,16 +20,24 @@
 #include <vector>
 #include "math.h"
 
+enum InterpolationType
+{
+    none,
+    linear,
+    cubic
+};
+
 class OneDWave
 {
 public:
     OneDWave (int startN, int endN,
                double fs, double outLength,
                double excitationLoc, double excitationWidth,
-               double outputLocStart);
+               double outputLocStart, InterpolationType interpolationType);
     
     ~OneDWave();
     
+    void recalculateCoeffs (int n);
     void scheme();
     void updateStates();
     
@@ -38,11 +46,11 @@ public:
 
     void fullGridInterpolation (bool isNGrowing);
     double cubicInterpolation (double* uVec, int l, double alph);
-    void recalculateCoeffs (int n);
-    
-    void setRetrievingState (bool set) { retrievingState = set; };
+    double linearInterpolation (double* uVec, int l, double alph);
+
+
 private:
-    int sampleAtWhichToRetrieveState;
+
     int startN, endN, lengthSound;
     double fs, outLength, excitationLoc, excitationWidth, outputLocStart;
     double startC, endC, cDiff;
@@ -50,26 +58,19 @@ private:
     int N, NPrev, outLoc;
     double k, h, c, lambdaSq;
     double B0, B1, C;
-    
     std::vector<double> emptyVector;
-    std::shared_ptr<std::vector<std::vector<double>>> uVecs1;
-    std::shared_ptr<std::vector<std::vector<double>>> uVecs2;
+    std::vector<std::vector<double>> uVecs1;
+    std::vector<std::vector<double>> uVecs2;
 
     std::vector<double*> u;
     
     std::vector<double> out;
     
-    std::ofstream stateAt;
-    std::ofstream plotIdx;
-    std::ofstream output;
-
-    int curPercentage = 0;
-    int test = 0;
+    std::ofstream stateAt, plotIdx, output, cSave, NSave, NChange, lambdaSqSave;
     
     bool pointingAtuVecs1;
     int curPlotIdx = 1;
-    
-    bool retrievingState = true;
+    InterpolationType interpolationType;
 };
 
 #endif /* OneDWave_h */

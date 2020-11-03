@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		AA3447C6254D812900AD21E4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3447C5254D812900AD21E4 /* main.cpp */; };
 		AA3447CF254D81D500AD21E4 /* OneDWave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3447CD254D81D500AD21E4 /* OneDWave.cpp */; };
+		AA3447D225513C0400AD21E4 /* OneDWaveDynamic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3447D025513C0400AD21E4 /* OneDWaveDynamic.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,8 @@
 		AA3447C5254D812900AD21E4 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AA3447CD254D81D500AD21E4 /* OneDWave.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OneDWave.cpp; sourceTree = "<group>"; };
 		AA3447CE254D81D500AD21E4 /* OneDWave.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneDWave.h; sourceTree = "<group>"; };
+		AA3447D025513C0400AD21E4 /* OneDWaveDynamic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OneDWaveDynamic.cpp; sourceTree = "<group>"; };
+		AA3447D125513C0400AD21E4 /* OneDWaveDynamic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneDWaveDynamic.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +66,8 @@
 				AA3447C5254D812900AD21E4 /* main.cpp */,
 				AA3447CD254D81D500AD21E4 /* OneDWave.cpp */,
 				AA3447CE254D81D500AD21E4 /* OneDWave.h */,
+				AA3447D025513C0400AD21E4 /* OneDWaveDynamic.cpp */,
+				AA3447D125513C0400AD21E4 /* OneDWaveDynamic.h */,
 			);
 			path = FullGridInterpolation;
 			sourceTree = "<group>";
@@ -125,6 +130,7 @@
 			files = (
 				AA3447C6254D812900AD21E4 /* main.cpp in Sources */,
 				AA3447CF254D81D500AD21E4 /* OneDWave.cpp in Sources */,
+				AA3447D225513C0400AD21E4 /* OneDWaveDynamic.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
