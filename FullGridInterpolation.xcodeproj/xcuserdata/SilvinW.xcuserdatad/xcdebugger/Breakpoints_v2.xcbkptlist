@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.80027"
+            timestampString = "626196504.461256"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "216"
-            endingLineNumber = "216"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
             landmarkName = "OneDWave::fullGridInterpolation (bool isNGrowing)"
             landmarkType = "7">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.800526"
+            timestampString = "626196504.461333"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "OneDWave::fullGridInterpolation (bool isNGrowing)"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,12 +138,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.800748"
+            timestampString = "626196504.461388"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
-            landmarkName = "OneDWave::OneDWave (int startN, int endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, InterpolationType interpolationType)"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "OneDWave::OneDWave (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, InterpolationType interpolationType, double lambdaMultiplier)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -154,199 +154,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.800959"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "247"
-            endingLineNumber = "247"
-            landmarkName = "OneDWave::cubicInterpolation (double* uVec, int l, double alph)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.801157"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
-            landmarkName = "OneDWave::scheme()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.8013279"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
-            landmarkName = "OneDWave::updateStates()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.801499"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
-            landmarkName = "OneDWave::scheme()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.801667"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
-            landmarkName = "OneDWave::OneDWave (int startN, int endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, InterpolationType interpolationType)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.801834"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "261"
-            endingLineNumber = "261"
-            landmarkName = "OneDWave::cubicInterpolation (double* uVec, int l, double alph)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.801944"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "254"
-            endingLineNumber = "254"
-            landmarkName = "OneDWave::cubicInterpolation (double* uVec, int l, double alph)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.802056"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "266"
-            endingLineNumber = "266"
-            landmarkName = "OneDWave::cubicInterpolation (double* uVec, int l, double alph)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.802166"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
-            landmarkName = "OneDWave::fullGridInterpolation (bool isNGrowing)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.802274"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
-            landmarkName = "OneDWave::fullGridInterpolation (bool isNGrowing)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.802382"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "213"
-            endingLineNumber = "213"
-            landmarkName = "OneDWave::fullGridInterpolation (bool isNGrowing)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.80249"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "240"
-            endingLineNumber = "240"
-            landmarkName = "OneDWave::cubicInterpolation (double* uVec, int l, double alph)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.8025939"
+            timestampString = "626196504.461439"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "248"
@@ -362,11 +170,203 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWave.cpp"
-            timestampString = "626101715.802693"
+            timestampString = "626196504.461496"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "OneDWave::scheme()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.461542"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "OneDWave::updateStates()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.461587"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "OneDWave::scheme()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.461633"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "OneDWave::OneDWave (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, InterpolationType interpolationType, double lambdaMultiplier)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.461678"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "262"
+            endingLineNumber = "262"
+            landmarkName = "OneDWave::cubicInterpolation (double* uVec, int l, double alph)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.4617209"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
+            landmarkName = "OneDWave::cubicInterpolation (double* uVec, int l, double alph)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.461766"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
+            landmarkName = "OneDWave::cubicInterpolation (double* uVec, int l, double alph)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.4618109"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "OneDWave::fullGridInterpolation (bool isNGrowing)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.4618551"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "OneDWave::fullGridInterpolation (bool isNGrowing)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.461903"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "214"
+            endingLineNumber = "214"
+            landmarkName = "OneDWave::fullGridInterpolation (bool isNGrowing)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.461948"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
+            landmarkName = "OneDWave::cubicInterpolation (double* uVec, int l, double alph)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.461995"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
+            landmarkName = "OneDWave::cubicInterpolation (double* uVec, int l, double alph)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.462039"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "228"
+            endingLineNumber = "228"
             landmarkName = "OneDWave::linearInterpolation (double* uVec, int l, double alph)"
             landmarkType = "7">
             <Locations>
@@ -455,12 +455,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/main.cpp"
-            timestampString = "626101715.802761"
+            timestampString = "626196504.462087"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "loop (OneDWave&amp; oneDWave, int start, int end, int lengthSound, double fs)"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "loop (OneDWave&amp; oneDWave, int start, int end, int lengthSound, double fs, int outputLocFromRightBoundary)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -471,12 +471,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.803239"
+            timestampString = "626196504.462504"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart)"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -487,12 +487,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.803342"
+            timestampString = "626196504.4625649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
-            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart)"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -503,12 +503,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.803431"
+            timestampString = "626196504.462616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart)"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -518,28 +518,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/main.cpp"
-            timestampString = "626101715.8035181"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "main(int argc, const char * argv[])"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.803847"
+            timestampString = "626196504.462664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
+            startingLineNumber = "256"
+            endingLineNumber = "256"
             landmarkName = "OneDWaveDynamic::scheme()"
             landmarkType = "7">
          </BreakpointContent>
@@ -551,7 +535,487 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.803932"
+            timestampString = "626196504.462711"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.4627579"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "OneDWaveDynamic::calculateInterpolatedPoints()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.462806"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
+            landmarkName = "OneDWaveDynamic::calculateInterpolatedPoints()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.462853"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
+            landmarkName = "OneDWaveDynamic::scheme()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.462898"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.4629461"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.462993"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463039"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "OneDWaveDynamic::scheme()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.4630851"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463131"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463177"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "231"
+            endingLineNumber = "231"
+            landmarkName = "OneDWaveDynamic::calculateInterpolatedPoints()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463225"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463271"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463317"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463364"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.46341"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463455"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart, double lambdaMultiplier)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.463503"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "OneDWave::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.46355"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463595"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463642"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "294"
+            endingLineNumber = "294"
+            landmarkName = "OneDWaveDynamic::retrieveOutput (int indexFromBoundary, bool fromRightBoundary)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.46369"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463735"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463782"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "288"
+            endingLineNumber = "288"
+            landmarkName = "OneDWaveDynamic::updateStates()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463827"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "301"
+            endingLineNumber = "301"
+            landmarkName = "OneDWaveDynamic::retrieveStateU()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463873"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
+            landmarkName = "OneDWaveDynamic::retrieveStateU()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.463935"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.464051"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.4641449"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.464231"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
+            timestampString = "626196504.464329"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "148"
@@ -567,12 +1031,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.804001"
+            timestampString = "626196504.464425"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
-            landmarkName = "OneDWaveDynamic::calculateInterpolatedPoints()"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -583,12 +1047,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.804062"
+            timestampString = "626196504.4645211"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
-            landmarkName = "OneDWaveDynamic::calculateInterpolatedPoints()"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "OneDWaveDynamic::recalculateCoeffs (int n)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -598,13 +1062,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.804125"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.464609"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "202"
-            endingLineNumber = "202"
-            landmarkName = "OneDWaveDynamic::scheme()"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "OneDWave::recalculateCoeffs (int n)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -614,13 +1078,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.804183"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.464674"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "200"
-            endingLineNumber = "200"
-            landmarkName = "OneDWaveDynamic::scheme()"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "OneDWave::recalculateCoeffs (int n)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -630,13 +1094,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.804242"
+            filePath = "FullGridInterpolation/OneDWave.cpp"
+            timestampString = "626196504.464721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart)"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "OneDWave::recalculateCoeffs (int n)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -646,30 +1110,14 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.804289"
+            filePath = "FullGridInterpolation/main.cpp"
+            timestampString = "626196504.464766"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
-            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FullGridInterpolation/OneDWaveDynamic.cpp"
-            timestampString = "626101715.804333"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
-            landmarkName = "OneDWaveDynamic::OneDWaveDynamic (double startN, double endN, double fs, double outLength, double excitationLoc, double excitationWidth, double outputLocStart)"
-            landmarkType = "7">
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "main(int argc, const char * argv[])"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

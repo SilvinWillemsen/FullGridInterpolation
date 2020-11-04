@@ -8,33 +8,35 @@
 
 #include "OneDWave.h"
 
-OneDWave::OneDWave (int startN, int endN,
+OneDWave::OneDWave (double startN, double endN,
                   double fs, double outLength,
                   double excitationLoc, double excitationWidth,
-                  double outputLocStart, InterpolationType interpolationType) :
+                  double outputLocStart, InterpolationType interpolationType,
+                  double lambdaMultiplier) :
     startN (startN), endN (endN),
     fs (fs), outLength (outLength),
     excitationLoc (excitationLoc),
     excitationWidth(excitationWidth),
     outputLocStart (outputLocStart),
-    interpolationType (interpolationType)
+    interpolationType (interpolationType),
+lambdaMultiplier (lambdaMultiplier)
 {
     lengthSound = outLength * fs;
     
     k = 1.0 / fs;
     
-    startC = 44100 / static_cast<double> (startN);
+    startC = 44100 / startN;
     c = startC;
-    endC = 44100 / static_cast<double> (endN);
+    endC = 44100 / endN;
     
     cDiff = startC - endC;
     h = c * k;
     N = floor (1.0 / h);
     h = 1 / static_cast<double> (N);
     NPrev = N;
-    lambdaSq = c * c * k * k / (h * h);
+    lambdaSq = lambdaMultiplier * c * c * k * k / (h * h);
 
-    emptyVector.resize (std::max(fs / 44100.0 * startN, fs / 44100.0 * endN)-1, 0);
+    emptyVector.resize (std::max(fs / 44100.0 * startN, fs / 44100.0 * endN) - 1, 0);
     uVecs1.resize (3, emptyVector);
     uVecs2.resize (3, emptyVector);
     u.resize(3, nullptr);
@@ -44,7 +46,7 @@ OneDWave::OneDWave (int startN, int endN,
     
     pointingAtuVecs1 = true;
     int loc = excitationLoc * N;
-    int width = excitationWidth * N;
+    int width = std::max(2.0, excitationWidth * N);
     int raisedCosStart = floor (loc - width * 0.5) - 1;
     int raisedCosEnd = floor (loc + width * 0.5) - 1;
     
@@ -63,13 +65,14 @@ OneDWave::OneDWave (int startN, int endN,
     
     
     // file writing
-    stateAt.open ("stateAt.csv");
-    plotIdx.open ("plotIdx.csv");
-    output.open ("output.csv");
-    cSave.open ("cSave.csv");
-    NSave.open ("NSave.csv");
-    NChange.open ("NChange.csv");
-    lambdaSqSave.open ("lambdaSqSave.csv");
+    stateAt.open ("stateAtI.csv");
+    plotIdx.open ("plotIdxI.csv");
+    output.open ("outputI.csv");
+    cSave.open ("cSaveI.csv");
+    NSave.open ("NSaveI.csv");
+    NChange.open ("NChangeI.csv");
+    lambdaSqSave.open ("lambdaSqSaveI.csv");
+    alfTickSave.open ("alfTickSaveI.csv");
 
 
 }
@@ -94,14 +97,12 @@ void OneDWave::recalculateCoeffs (int n)
         N = floor (1.0 / h);
         h = 1 / static_cast<double> (N);
     }
-    lambdaSq = 0.999 * c * c * k * k / (h * h);
+    lambdaSq = lambdaMultiplier * c * c * k * k / (h * h);
     lambdaSqSave << lambdaSq << ";\n";
     cSave << c << ";\n";
     NSave << N << ";\n";
     
-    //    if (n % int (fs / 44.10) == 0)
-    //        retrieveState (N);
-    
+
     if (N != NPrev)
     {
         NChange << NPrev << ", " << N << ";\n";
@@ -286,11 +287,13 @@ double OneDWave::cubicInterpolation (double* uVec, int l, double alph)
 
 void OneDWave::retrieveOutput (int indexFromBoundary, bool fromRightBoundary)
 {
-    output << u[1][fromRightBoundary ? (N-1-indexFromBoundary) : (indexFromBoundary - 1)] << ";\n";
+    output << u[1][fromRightBoundary ? (N-2-indexFromBoundary) : (indexFromBoundary - 1)] << ";\n";
 }
 
 void OneDWave::retrieveState (int end)
 {
+    if (end == -1)
+        end = N;
     plotIdx << curPlotIdx << ";\n";
     for (int l = 0; l < end-1; ++l)
         stateAt << std::to_string(u[1][l]) << ";\n";

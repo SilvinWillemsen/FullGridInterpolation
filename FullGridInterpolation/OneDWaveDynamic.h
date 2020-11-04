@@ -21,7 +21,7 @@ public:
     OneDWaveDynamic (double startN, double endN,
               double fs, double outLength,
               double excitationLoc, double excitationWidth,
-              double outputLocStart);
+              double outputLocStart, double lambdaMultiplier);
     
     ~OneDWaveDynamic();
     
@@ -40,11 +40,11 @@ public:
 private:
     int lengthSound;
     double startN, endN;
-    double fs, outLength, excitationLoc, excitationWidth, outputLocStart;
+    double fs, outLength, excitationLoc, excitationWidth, outputLocStart, lambdaMultiplier;
     double startC, endC, cDiff;
     
     int N, NPrev, outLoc, Mu, Mw;
-    double k, h, c, lambdaSq, NDouble, alf;
+    double k, h, c, lambdaSq, NDouble, alf, alfTick;
     double B0, B1, C;
 
     // calculating interpolated points at the connection
@@ -60,9 +60,9 @@ private:
     double uMuP1 = 0;
     double wMin1 = 0;
 
-    std::vector<double> out;
+    std::vector<double> customIp, customIp1;
     
-    std::ofstream stateAt, plotIdx, output, cSave, NSave, NChange, lambdaSqSave;
+    std::ofstream stateAt, plotIdx, output, cSave, NSave, NChange, lambdaSqSave, alfTickSave;
     
     int curPlotIdx = 1;
     

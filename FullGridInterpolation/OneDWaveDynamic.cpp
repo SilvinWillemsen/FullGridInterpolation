@@ -11,12 +11,13 @@
 OneDWaveDynamic::OneDWaveDynamic (double startN, double endN,
                     double fs, double outLength,
                     double excitationLoc, double excitationWidth,
-                    double outputLocStart) :
+                    double outputLocStart, double lambdaMultiplier) :
 startN (startN), endN (endN),
 fs (fs), outLength (outLength),
 excitationLoc (excitationLoc),
 excitationWidth(excitationWidth),
-outputLocStart (outputLocStart)
+outputLocStart (outputLocStart),
+lambdaMultiplier (lambdaMultiplier)
 {
     lengthSound = outLength * fs;
     
@@ -31,10 +32,10 @@ outputLocStart (outputLocStart)
     N = floor (1.0 / h);
     h = 1 / static_cast<double> (N);
     NPrev = N;
-    lambdaSq = c * c * k * k / (h * h);
+    lambdaSq = lambdaMultiplier * c * c * k * k / (h * h);
     
-    Mu = ceil (fs / 44100.0 * N * 0.5);
-    Mw = floor (fs / 44100.0 * N * 0.5);
+    Mu = ceil (N * 0.5);
+    Mw = floor (N * 0.5);
     uVecs.resize (3, std::vector<double> (ceil (std::max (double(Mu), fs / 44100.0 * endN) * 0.5), 0));
     wVecs.resize (3, std::vector<double> (floor (std::max (double(Mw), fs / 44100.0 * endN) * 0.5), 0));
     
@@ -48,7 +49,7 @@ outputLocStart (outputLocStart)
     }
     
     int loc = excitationLoc * N;
-    int width = excitationWidth * N;
+    int width = std::max (2.0, excitationWidth * N);
     int raisedCosStart = floor (loc - width * 0.5) - 1;
     int raisedCosEnd = floor (loc + width * 0.5) - 1;
     
@@ -78,9 +79,11 @@ outputLocStart (outputLocStart)
         }
     }
     
-    out.resize (lengthSound, 0);
     outLoc = outputLocStart * N;
     
+    customIp.resize (4, 0);
+    customIp1.resize (4, 0);
+
     B0 = 2.0 - 2.0 * lambdaSq;
     B1 = lambdaSq;
     C = -1.0;
@@ -90,14 +93,14 @@ outputLocStart (outputLocStart)
     
     
     // file writing
-    stateAt.open ("stateAt.csv");
-    plotIdx.open ("plotIdx.csv");
-    output.open ("output.csv");
-    cSave.open ("cSave.csv");
-    NSave.open ("NSave.csv");
-    NChange.open ("NChange.csv");
-    lambdaSqSave.open ("lambdaSqSave.csv");
-    
+    stateAt.open ("stateAtD.csv");
+    plotIdx.open ("plotIdxD.csv");
+    output.open ("outputD.csv");
+    cSave.open ("cSaveD.csv");
+    NSave.open ("NSaveD.csv");
+    NChange.open ("NChangeD.csv");
+    lambdaSqSave.open ("lambdaSqSaveD.csv");
+    alfTickSave.open ("alfTickSaveD.csv");
     
 }
 
@@ -110,6 +113,7 @@ OneDWaveDynamic::~OneDWaveDynamic()
     NSave.close();
     NChange.close();
     lambdaSqSave.close();
+    alfTickSave.close();
 }
 
 void OneDWaveDynamic::recalculateCoeffs (int n)
@@ -119,7 +123,7 @@ void OneDWaveDynamic::recalculateCoeffs (int n)
     NDouble = 1.0 / h;
     N = floor (NDouble);
     
-    lambdaSq = c * c * k * k / (h * h);
+    lambdaSq = lambdaMultiplier * c * c * k * k / (h * h);
     lambdaSqSave << lambdaSq << ";\n";
     cSave << c << ";\n";
     NSave << N << ";\n";
@@ -127,7 +131,7 @@ void OneDWaveDynamic::recalculateCoeffs (int n)
     alf = NDouble - N;
 //    if (n % 441 == 0)
 
-//    if (n > 10000)
+//    if (n > 10)
 //    {
 //        std::cout << std::endl;
 //        stopSimulation = true;
@@ -138,7 +142,78 @@ void OneDWaveDynamic::recalculateCoeffs (int n)
         NChange << NPrev << ", " << N << ";\n";
         if (abs(N - NPrev) > 1)
             std::cout << "too fast..?" << std::endl;
-        // DO STUFF HERE
+        alfTick = ((1.0-Mw * h) - (Mu * h + h)) / h;
+        alfTickSave << alfTick << ";\n";
+        if (round(round(alfTick * 10) / 15.0) == 1)
+            std::cout << alfTick - alf << std::endl;
+
+//        alfTick = alf;
+//        std::cout << alfTick - alf << std::endl;
+        if (N > NPrev) // add point
+        {
+            customIp[0] = -alfTick * (alfTick + 1.0) / ((alfTick + 2.0) * (alfTick + 3.0));
+            customIp[1] = 2.0 * alfTick / (alfTick + 2.0);
+            customIp[2] = 2.0 / (alfTick + 2.0);
+            customIp[3] = -2.0 * alfTick / ((alfTick + 3.0) * (alfTick + 2.0));
+            
+            customIp1[3] = alf * (alf - 1) * (alf - 2) / -6.0;
+            customIp1[2] = (alf - 1) * (alf + 1) * (alf - 2) / 2.0;
+            customIp1[1] = alf * (alf + 1) * (alf - 2) / -2.0;
+            customIp1[0] = alf * (alf + 1) * (alf - 1) / 6.0;
+            if (N % 2 == 1)
+            {
+                u[1][Mu] = customIp[0] * u[1][Mu-2]
+                    + customIp[1] * u[1][Mu-1]
+                    + customIp[2] * w[1][0]
+                    + customIp[3] * w[1][1];
+                u[2][Mu] = customIp[0] * u[2][Mu-2]
+                    + customIp[1] * u[2][Mu-1]
+                    + customIp[2] * w[2][0]
+                    + customIp[3] * w[2][1];
+                ++Mu;
+
+            }
+            else
+            {
+                // move w vector one up (can be optimised)
+                for (int l = Mw-1; l >= 0; --l)
+                {
+                    w[1][l+1] = w[1][l];
+                    w[2][l+1] = w[2][l];
+
+                }
+                w[1][0] = customIp[3] * u[1][Mu-2]
+                    + customIp[2] * u[1][Mu-1]
+                    + customIp[1] * w[1][0]
+                    + customIp[0] * w[1][1];
+                w[2][0] = customIp[3] * u[2][Mu-2]
+                    + customIp[2] * u[2][Mu-1]
+                    + customIp[1] * w[2][0]
+                    + customIp[0] * w[2][1];
+                ++Mw;
+            }
+        } else {
+            if (N % 2 == 0)
+            {
+                u[1][Mu-1] = 0;
+                u[2][Mu-1] = 0;
+                --Mu;
+                
+            }
+            else
+            {
+                // move w vector one down (can be optimised)
+                for (int l = 0; l < Mw; ++l)
+                {
+                    w[1][l] = w[1][l+1];
+                    w[2][l] = w[2][l+1];
+                }
+                w[1][Mw-1] = 0;
+                w[2][Mw-1] = 0;
+
+                --Mw;
+            }
+        }
     }
     NPrev = N;
     
@@ -197,9 +272,6 @@ void OneDWaveDynamic::scheme()
     w[0][Mw-1] = B0 * w[1][Mw-1] + B1 * w[1][Mw-2] + C * w[2][Mw-1];
     w[0][0] = B0 * w[1][0] + B1 * (w[1][1] + wMin1) + C * w[2][0];
     
-    retrieveStateU();
-    retrieveStateW();
-    
 }
 
 
@@ -218,18 +290,18 @@ void OneDWaveDynamic::updateStates()
 
 void OneDWaveDynamic::retrieveOutput (int indexFromBoundary, bool fromRightBoundary)
 {
-    output << w[1][fromRightBoundary ? (N-1-indexFromBoundary) : (indexFromBoundary - 1)] << ";\n";
+//    output << w[1][fromRightBoundary ? (Mw-1-indexFromBoundary) : (indexFromBoundary - 1)] << ";\n";
+    output << w[1][std::max (0, (Mw-1-indexFromBoundary))] << ";\n";
 }
 
 void OneDWaveDynamic::retrieveStateU()
 {
     plotIdx << curPlotIdx << ";\n";
     for (int l = 0; l < Mu; ++l)
-        stateAt << std::to_string(u[0][l]) << ";\n";
+        stateAt << std::to_string(u[1][l]) << ";\n";
     curPlotIdx += Mu-1;
     plotIdx << curPlotIdx << ";\n";
     ++curPlotIdx;
-    
 //    std::cout << "Last index of uNext " << u[0][Mu-1] << std::endl;
     
 }
@@ -238,7 +310,7 @@ void OneDWaveDynamic::retrieveStateW()
 {
     plotIdx << curPlotIdx << ";\n";
     for (int l = 0; l < Mw; ++l)
-        stateAt << std::to_string(w[0][l]) << ";\n";
+        stateAt << std::to_string(w[1][l]) << ";\n";
     curPlotIdx += Mw-1;
     plotIdx << curPlotIdx << ";\n";
     ++curPlotIdx;

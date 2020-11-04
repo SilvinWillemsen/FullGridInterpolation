@@ -30,10 +30,10 @@ enum InterpolationType
 class OneDWave
 {
 public:
-    OneDWave (int startN, int endN,
+    OneDWave (double startN, double endN,
                double fs, double outLength,
                double excitationLoc, double excitationWidth,
-               double outputLocStart, InterpolationType interpolationType);
+               double outputLocStart, InterpolationType interpolationType, double lambdaMultiplier);
     
     ~OneDWave();
     
@@ -52,7 +52,7 @@ public:
 private:
 
     int startN, endN, lengthSound;
-    double fs, outLength, excitationLoc, excitationWidth, outputLocStart;
+    double fs, outLength, excitationLoc, excitationWidth, outputLocStart, lambdaMultiplier;
     double startC, endC, cDiff;
     
     int N, NPrev, outLoc;
@@ -66,11 +66,12 @@ private:
     
     std::vector<double> out;
     
-    std::ofstream stateAt, plotIdx, output, cSave, NSave, NChange, lambdaSqSave;
+    std::ofstream stateAt, plotIdx, output, cSave, NSave, NChange, lambdaSqSave, alfTickSave;
     
     bool pointingAtuVecs1;
     int curPlotIdx = 1;
     InterpolationType interpolationType;
+    
 };
 
 #endif /* OneDWave_h */
