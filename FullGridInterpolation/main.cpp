@@ -39,6 +39,7 @@ void loop (OneDWaveDynamic& oneDWave, int start, int end, int lengthSound, doubl
 {
     int curPercentage = start / static_cast<double> (lengthSound - 1);
     double test = 0;
+    int counter = 0;
     for (int n = start; n < end; ++n)
     {
         if (oneDWave.simulationStopped())
@@ -46,10 +47,12 @@ void loop (OneDWaveDynamic& oneDWave, int start, int end, int lengthSound, doubl
         oneDWave.recalculateCoeffs (n);
         oneDWave.scheme();
         oneDWave.retrieveOutput (fs / 44100.0 * outputLocFromRightBoundary, true);
-        if (n % int (fs / 44100.0) == 0 && n < 1000)
+        if (n % int (fs) == 0)
         {
             oneDWave.retrieveStateU();
             oneDWave.retrieveStateW();
+            ++counter;
+            std::cout << counter << std::endl;
         }
         oneDWave.updateStates();
         
@@ -63,23 +66,29 @@ void loop (OneDWaveDynamic& oneDWave, int start, int end, int lengthSound, doubl
     }
 }
 
+int adder(int a , int b){
+    return a + b;
+}
+
 int main(int argc, const char * argv[]) {
     // insert code here...
+
 #if DEBUG == 1
     std::cout << "I'm in DEBUG!" << std::endl;
 #endif
     double fs = 44100;
     double outLength = 10;
     double lengthSound = fs * outLength;
-    double NStart = 35.0;
-    double NEnd = 65.0;
+    double NStart = 15;
+    double NEnd = 20;
     double lambdaMultiplier = 1;
     int outputLocFromRightBoundary = 2;
     double excitationWidth = 0.2;
-    double excitationLoc = 0.2;
+    double excitationLoc = 1.0 / M_PI;
     double outputLocStart = 0.9;
 
-    std::string version = "D"; // [I]nterpolation, [D]ynamic
+    std::string version = "D"; // [I]nterpolation, [D]ynamic or [B]oth
+    int whereToAddPoints = -1;
     
     std::ofstream curFs, curVersion;
     curFs.open ("curFs.csv");
@@ -90,17 +99,30 @@ int main(int argc, const char * argv[]) {
     curVersion << version;
     curVersion.close();
     
-    if (version == "I")
+    if (version == "I" || version == "B")
     {
         std::cout << "Interpolated version" << std::endl;
-        OneDWave oneDWaveInterpol (NStart, NEnd, fs, outLength, excitationWidth, excitationLoc, outputLocStart, cubic, lambdaMultiplier);
+        OneDWave oneDWaveInterpol (NStart, NEnd,
+                                   fs, outLength,
+                                   excitationLoc, excitationWidth,
+                                   outputLocStart, cubic,
+                                   lambdaMultiplier);
         loop (oneDWaveInterpol, 0, lengthSound, lengthSound, fs, outputLocFromRightBoundary);
+        std::cout << "Done with interpolated version" << std::endl;
+
     }
-    else if (version == "D")
+    if (version == "D" || version == "B")
     {
         std::cout << "Dynamic version" << std::endl;
-        OneDWaveDynamic oneDWaveDynamic (NStart, NEnd, fs, outLength, excitationWidth, excitationLoc, outputLocStart, lambdaMultiplier);
+        OneDWaveDynamic oneDWaveDynamic (NStart, NEnd,
+                                         fs, outLength,
+                                         excitationLoc, excitationWidth,
+                                         outputLocStart, dCubic,
+                                         lambdaMultiplier,
+                                         true, whereToAddPoints);
         loop (oneDWaveDynamic, 0, lengthSound, lengthSound, fs,  outputLocFromRightBoundary);
+        std::cout << "Done with dynamic version" << std::endl;
+
     }
 #if DEBUG == 1
     std::cout << "I'm in DEBUG!" << std::endl;

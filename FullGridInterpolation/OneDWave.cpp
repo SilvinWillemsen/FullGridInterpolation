@@ -108,8 +108,8 @@ void OneDWave::recalculateCoeffs (int n)
         NChange << NPrev << ", " << N << ";\n";
         if (abs(N - NPrev) > 1)
             std::cout << "too fast..?" << std::endl;
-        
-        fullGridInterpolation (N > NPrev);
+        if (interpolationType != none)
+            fullGridInterpolation (N > NPrev);
     }
     NPrev = N;
     
@@ -216,6 +216,74 @@ void OneDWave::fullGridInterpolation (bool isNGrowing)
         
         
     } else { // Add the division h1/h2 division here somewhere from stefans book
+        
+        double alphSpace = NPrev / static_cast<double> (N);
+        double alph = alphSpace;
+        double m = alphSpace - 1;
+        
+        if (pointingAtuVecs1)
+        {
+            uVecs2.resize (3, std::vector<double> (std::max(fs / 44100.0 * startN, fs / 44100.0 * endN)-1, 0));
+            
+            if (interpolationType == linear)
+            {
+                for (int l = 0; l < N-1; ++l)
+                {
+                    uVecs2[1][l] = linearInterpolation (u[1], floor(m), alph);
+                    uVecs2[2][l] = linearInterpolation (u[2], floor(m), alph);
+                    m += alphSpace;
+                    alph += alphSpace;
+                    if (alph >= 1)
+                        alph -= 1;
+                }
+            }
+            else if (interpolationType == cubic)
+            {
+                for (int l = 0; l < N-1; ++l)
+                {
+                    uVecs2[1][l] = cubicInterpolation (u[1], floor(m), alph);
+                    uVecs2[2][l] = cubicInterpolation (u[2], floor(m), alph);
+                    m += alphSpace;
+                    alph += alphSpace;
+                    if (alph >= 1)
+                        alph -= 1;
+                }
+            }
+            
+            for (int i = 0; i < uVecs2.size(); ++i)
+                u[i] = &uVecs2[i][0];
+            
+        } else {
+            uVecs1.resize (3, std::vector<double> (std::max(fs / 44100.0 * startN, fs / 44100.0 * endN)-1, 0));
+            
+            if (interpolationType == linear)
+            {
+                for (int l = 0; l < N-1; ++l)
+                {
+                    uVecs1[1][l] = linearInterpolation (u[1], floor(m), alph);
+                    uVecs1[2][l] = linearInterpolation (u[2], floor(m), alph);
+                    m += alphSpace;
+                    alph += alphSpace;
+                    if (alph >= 1)
+                        alph -= 1;
+                }
+            }
+            
+            if (interpolationType == cubic)
+            {
+                for (int l = 0; l < N-1; ++l)
+                {
+                    uVecs1[1][l] = cubicInterpolation (u[1], floor(m), alph);
+                    uVecs1[2][l] = cubicInterpolation (u[2], floor(m), alph);
+                    m += alphSpace;
+                    alph += alphSpace;
+                    if (alph >= 1)
+                        alph -= 1;
+                }
+            }
+            for (int i = 0; i < uVecs1.size(); ++i)
+                u[i] = &uVecs1[i][0];
+        }
         
     }
     pointingAtuVecs1 = !pointingAtuVecs1;

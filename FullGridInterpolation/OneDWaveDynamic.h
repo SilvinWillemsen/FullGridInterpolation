@@ -15,14 +15,31 @@
 #include <vector>
 #include "math.h"
 
+enum DynamicInterpolationType
+{
+    dLinear,
+    dCubic
+};
+
+
 class OneDWaveDynamic
 {
 public:
     OneDWaveDynamic (double startN, double endN,
               double fs, double outLength,
               double excitationLoc, double excitationWidth,
-              double outputLocStart, double lambdaMultiplier);
-    
+              double outputLocStart, DynamicInterpolationType dyIntType,
+              double lambdaMultiplier,
+              bool changeC, int whereToAddPoints);
+    /*
+        The whereToAddPoints variable determines Number from the right boundary (quite important, switches between different techniques)
+        -1: Adding to the center alternating between left and right string.
+        0: Interpolated boundary
+        1: Right string has a single moving point. Using simply supported boundary condition
+        2: Right string has two moving points. When trying to solve the cubic
+        interpolation, w_2 is always 0 (that's why this is a bit different)
+                                        >3: (Expected behaviour) Selects where to add points (to left string).
+    */
     ~OneDWaveDynamic();
     
     void recalculateCoeffs (int n);
@@ -35,11 +52,13 @@ public:
 
     void retrieveOutput (int indexFromBoundary, bool fromRightBoundary);
     
-    
     bool simulationStopped() { return stopSimulation; };
+    
+    void addRemoveInCenter();
+    
 private:
     int lengthSound;
-    double startN, endN;
+    double startN, endN, startNTrue, endNTrue, NDiff;
     double fs, outLength, excitationLoc, excitationWidth, outputLocStart, lambdaMultiplier;
     double startC, endC, cDiff;
     
@@ -67,6 +86,13 @@ private:
     int curPlotIdx = 1;
     
     bool stopSimulation = false;
+    bool changeC;
+    
+    DynamicInterpolationType dyIntType;
+    int whereToAddPoints;
+    
+    void (OneDWaveDynamic::*addRemovePoints)();
+
 };
 
 #endif /* OneDWaveDynamic_h */
