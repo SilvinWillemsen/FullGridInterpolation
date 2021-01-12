@@ -25,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AA2D9F0E25ADAF2400C0A57B /* eigen */ = {isa = PBXFileReference; lastKnownFileType = folder; path = eigen; sourceTree = "<group>"; };
 		AA3447C2254D812900AD21E4 /* FullGridInterpolation */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FullGridInterpolation; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA3447C5254D812900AD21E4 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AA3447CD254D81D500AD21E4 /* OneDWave.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OneDWave.cpp; sourceTree = "<group>"; };
@@ -47,6 +48,7 @@
 		AA3447B9254D812900AD21E4 = {
 			isa = PBXGroup;
 			children = (
+				AA2D9F0E25ADAF2400C0A57B /* eigen */,
 				AA3447C4254D812900AD21E4 /* FullGridInterpolation */,
 				AA3447C3254D812900AD21E4 /* Products */,
 			);

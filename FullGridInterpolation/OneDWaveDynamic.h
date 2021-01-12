@@ -14,13 +14,23 @@
 #include <fstream>
 #include <vector>
 #include "math.h"
+#include "../eigen/Eigen/Eigen"
 
 enum DynamicInterpolationType
 {
     dLinear,
-    dCubic
+    dCubic,
+    dSinc
 };
 
+struct SincInterpolVals
+{
+    SincInterpolVals (int sincWidth = 0, double alphaBand = 0) :
+    sincWidth (sincWidth), alphaBand (alphaBand)
+    {}
+    int sincWidth;
+    double alphaBand;
+};
 
 class OneDWaveDynamic
 {
@@ -29,16 +39,20 @@ public:
               double fs, double outLength,
               double excitationLoc, double excitationWidth,
               double outputLocStart, DynamicInterpolationType dyIntType,
+              SincInterpolVals& sIV,
               double lambdaMultiplier,
-              bool changeC, int whereToAddPoints);
+              bool changeC, int numFromRightBound,
+              bool lpConnection, double lpExponent,
+              bool LFO, double LFOfreq = 0,
+              double changeS = 0, double changeE = 1);
     /*
-        The whereToAddPoints variable determines Number from the right boundary (quite important, switches between different techniques)
+        The numFromRightBound variable determines Number from the right boundary (quite important, switches between different techniques)
         -1: Adding to the center alternating between left and right string.
         0: Interpolated boundary
         1: Right string has a single moving point. Using simply supported boundary condition
         2: Right string has two moving points. When trying to solve the cubic
         interpolation, w_2 is always 0 (that's why this is a bit different)
-                                        >3: (Expected behaviour) Selects where to add points (to left string).
+        >3: (Expected behaviour) Selects where to add points (to left string).
     */
     ~OneDWaveDynamic();
     
@@ -55,7 +69,11 @@ public:
     bool simulationStopped() { return stopSimulation; };
     
     void addRemoveInCenter();
-    
+    void addRemoveAtPoint();
+
+    void createCustomIp();
+    void lpPoints(); // low-pass the connection
+
 private:
     int lengthSound;
     double startN, endN, startNTrue, endNTrue, NDiff;
@@ -89,10 +107,27 @@ private:
     bool changeC;
     
     DynamicInterpolationType dyIntType;
-    int whereToAddPoints;
+    int numFromRightBound;
     
     void (OneDWaveDynamic::*addRemovePoints)();
 
+    bool LFO;
+    double LFOFreq;
+    double changeStart;
+    double changeEnd;
+    double changeDiff;
+
+    // LowPass the connection
+    bool lpConnection;
+    double lpExponent;
+    
+    
+    SincInterpolVals sIV;
+    int sincWidth, iLen;
+    double bmax;
+    std::vector<double> xUMp1;
+    Eigen::VectorXd aU, bU, aW;
+    Eigen::MatrixXd AU;
 };
 
 #endif /* OneDWaveDynamic_h */
