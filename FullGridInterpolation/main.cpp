@@ -78,10 +78,10 @@ int main(int argc, const char * argv[]) {
     std::cout << "I'm in DEBUG!" << std::endl;
 #endif
     double fs = 44100;
-    double outLength = 5;
+    double outLength = 10;
     double lengthSound = fs * outLength;
-    double NStart = 160.0;
-    double NEnd = 15.0;
+    double NStart = 15.0;
+    double NEnd = 20.0;
     double lambdaMultiplier = 1;
     int outputLocFromBoundary = 1;
     double excitationWidth = 0.2;
@@ -94,13 +94,13 @@ int main(int argc, const char * argv[]) {
          The numFromRightBound variable determines Number from the right boundary (quite important, switches between different techniques)
          -1: Adding to the center alternating between left and right string.
          0: Interpolated boundary
-         1: Right string has a single moving point. Using simply supported boundary condition
+         1: Right string has a single moving point. Using simply supported boundary condition (if cubic)
          2: Right string has two moving points. When trying to solve the cubic
          interpolation, w_2 is always 0 (that's why this is a bit different)
          >3: (Expected behaviour) Selects where to add points (to left string).
      */
     
-    int numFromRightBound = -1;
+    int numFromRightBound = 1;
     
     // Set up different data
     std::ofstream curFs, curVersion;
@@ -132,11 +132,11 @@ int main(int argc, const char * argv[]) {
         OneDWaveDynamic oneDWaveDynamic (NStart, NEnd,
                                          fs, outLength,
                                          excitationLoc, excitationWidth,
-                                         outputLocStart, dSinc,
+                                         outputLocStart, dAltCubic,
                                          sIV,
                                          lambdaMultiplier,
-                                         false, numFromRightBound,
-                                         true, 30,  // Low-pass the connection? And with what exponent?
+                                         true, numFromRightBound,
+                                         false, 50,  // Low-pass the connection? And with what exponent?
                                          false, 5); // LFO wavespeed/number of points? Freq
 //        ,0.5 * fs / lengthSound, (0.5 + 3*abs(NEnd - NStart) / fs) * fs / lengthSound);
         loop (oneDWaveDynamic, 0, lengthSound, lengthSound, fs,  outputLocFromBoundary);

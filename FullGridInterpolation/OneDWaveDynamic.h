@@ -20,6 +20,8 @@ enum DynamicInterpolationType
 {
     dLinear,
     dCubic,
+    dAltCubic,
+    dQuartic,
     dSinc
 };
 

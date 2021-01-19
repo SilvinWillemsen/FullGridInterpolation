@@ -408,9 +408,39 @@ void OneDWaveDynamic::calculateInterpolatedPoints()
             wMin1 = (-v1 * a21 + v2 * a11) * oOdet;
             break;
         }
+        case dAltCubic:
+        {
+            alpha = (alf - 1.0) / (alf + 2.0);
+            beta =  (alf + 1.0) / 2.0;
+            gamma = 1.0 - alf;
+            delta =  alf * (alf - 1.0) / (2.0 * (alf + 2.0));
+            
+            if (numFromRightBound > 2 || numFromRightBound == -1)
+            {
+                w2 = w[1][2];
+                w1 = w[1][1];
+            }
+            else if (numFromRightBound == 2)
+            {
+                w1 = w[1][1];
+            }
+            else if (numFromRightBound == 1)
+            {
+                w2 = -w[1][0];
+            }
+            
+            uMuP1 = alpha * u[1][Mu-1] + beta * w[1][0] + gamma * w1 + delta * w2;
+            wMin1 = delta * u[1][Mu-3] + gamma * u[1][Mu-2] + beta * u[1][Mu-1] + alpha * w[1][0];
+
+            break;
+        }
         case dLinear:
         {
-            uMuP1 = (1.0 - alf) * w[1][1] + alf * w[1][0];
+            if (numFromRightBound != 1)
+            {
+                w1 = (1.0 - alf) * w[1][1];
+            }
+            uMuP1 = w1 + alf * w[1][0];
             wMin1 = (1.0 - alf) * u[1][Mu-2] + alf * u[1][Mu-1];
             break;
         }
@@ -597,34 +627,50 @@ void OneDWaveDynamic::addRemoveAtPoint()
 
 void OneDWaveDynamic::createCustomIp()
 {
-    if (dyIntType == dCubic)
+    switch (dyIntType)
     {
-        customIp[0] = -alfTick * (alfTick + 1.0) / ((alfTick + 2.0) * (alfTick + 3.0));
-        customIp[1] = 2.0 * alfTick / (alfTick + 2.0);
-        customIp[2] = 2.0 / (alfTick + 2.0);
-        customIp[3] = -2.0 * alfTick / ((alfTick + 3.0) * (alfTick + 2.0));
+        case dLinear:
+        {
+            customIp[0] = 0;
+            customIp[1] = alfTick / (alfTick + 1.0);
+            customIp[2] = 1.0 / (alfTick + 1.0);
+            customIp[3] = 0;
+            break;
+        }
+        case dCubic:
+        case dAltCubic:
+        case dQuartic:
+        {
+            customIp[0] = -alfTick * (alfTick + 1.0) / ((alfTick + 2.0) * (alfTick + 3.0));
+            customIp[1] = 2.0 * alfTick / (alfTick + 2.0);
+            customIp[2] = 2.0 / (alfTick + 2.0);
+            customIp[3] = -2.0 * alfTick / ((alfTick + 3.0) * (alfTick + 2.0));
         
-        //            customIp1[3] = alf * (alf - 1) * (alf - 2) / -6.0;
-        //            customIp1[2] = (alf - 1) * (alf + 1) * (alf - 2) / 2.0;
-        //            customIp1[1] = alf * (alf + 1) * (alf - 2) / -2.0;
-        //            customIp1[0] = alf * (alf + 1) * (alf - 1) / 6.0;
-    }
-    else if (dyIntType == dSinc)
-    {
-        int custSincWidth = 2;
-        double custBMax = M_PI;
-        std::vector <double> xPosCustIp (4, 0);
-        
-        for (int i = 0; i < custSincWidth; ++i)
-            xPosCustIp[i] = i-custSincWidth;
-        for (int i = custSincWidth; i < custSincWidth * 2; ++i)
-            xPosCustIp[i] = i - custSincWidth + alf;
-        
-        for (int i = 0; i < custSincWidth * 2; ++i)
-            customIp[i] = sin(custBMax * xPosCustIp[i]) / (xPosCustIp[i] * custBMax);
-        
-        if (alf == 0)
-            customIp[custSincWidth] = 1;
+            //            customIp1[3] = alf * (alf - 1) * (alf - 2) / -6.0;
+            //            customIp1[2] = (alf - 1) * (alf + 1) * (alf - 2) / 2.0;
+            //            customIp1[1] = alf * (alf + 1) * (alf - 2) / -2.0;
+            //            customIp1[0] = alf * (alf + 1) * (alf - 1) / 6.0;
+            break;
+        }
+            
+        case dSinc:
+        {
+            int custSincWidth = 2;
+            double custBMax = M_PI;
+            std::vector <double> xPosCustIp (4, 0);
+            
+            for (int i = 0; i < custSincWidth; ++i)
+                xPosCustIp[i] = i-custSincWidth;
+            for (int i = custSincWidth; i < custSincWidth * 2; ++i)
+                xPosCustIp[i] = i - custSincWidth + alf;
+            
+            for (int i = 0; i < custSincWidth * 2; ++i)
+                customIp[i] = sin(custBMax * xPosCustIp[i]) / (xPosCustIp[i] * custBMax);
+            
+            if (alf == 0)
+                customIp[custSincWidth] = 1;
+            break;
+        }
     }
 }
 
