@@ -48,7 +48,7 @@ void loop (OneDWaveDynamic& oneDWave, int start, int end, int lengthSound, doubl
         oneDWave.scheme();
         oneDWave.retrieveOutput (fs / 44100.0 * outputLocFromBoundary, false);
 //        if (int(n / 100.0) % int (fs) == 0)
-        if (n >= 0 * lengthSound && n < 0.05 * lengthSound)
+        if (n >= 0 * fs && n < 0*fs)
         {
             oneDWave.retrieveStateU();
             oneDWave.retrieveStateW();
@@ -78,7 +78,7 @@ int main(int argc, const char * argv[]) {
     std::cout << "I'm in DEBUG!" << std::endl;
 #endif
     double fs = 44100;
-    double outLength = 10;
+    double outLength = 2;
     double lengthSound = fs * outLength;
     double NStart = 15.0;
     double NEnd = 20.0;
@@ -100,7 +100,7 @@ int main(int argc, const char * argv[]) {
          >3: (Expected behaviour) Selects where to add points (to left string).
      */
     
-    int numFromRightBound = 1;
+    int numFromRightBound = -1;
     
     // Set up different data
     std::ofstream curFs, curVersion;
@@ -112,7 +112,7 @@ int main(int argc, const char * argv[]) {
     curVersion << version;
     curVersion.close();
     
-    SincInterpolVals sIV (2, 1); // sincWidth, alphaBandwidth. If sincWidth == -1, this results in using numFromRightBound + 1. If also numFromRightBound == -1, it uses the entire range.
+    SincInterpolVals sIV (2, 0.8); // sincWidth, alphaBandwidth. If sincWidth == -1, this results in using numFromRightBound + 1. If also numFromRightBound == -1, it uses the entire range.
     
     if (version == "I" || version == "B")
     {
@@ -132,11 +132,12 @@ int main(int argc, const char * argv[]) {
         OneDWaveDynamic oneDWaveDynamic (NStart, NEnd,
                                          fs, outLength,
                                          excitationLoc, excitationWidth,
-                                         outputLocStart, dAltCubic,
+                                         outputLocStart,
+                                         dSinc, false   , false, // interpolation type, even, shifted?
                                          sIV,
                                          lambdaMultiplier,
-                                         true, numFromRightBound,
-                                         false, 50,  // Low-pass the connection? And with what exponent?
+                                         true, numFromRightBound, //change C (or N)
+                                         true, 50,  // Low-pass the connection? And with what exponent?
                                          false, 5); // LFO wavespeed/number of points? Freq
 //        ,0.5 * fs / lengthSound, (0.5 + 3*abs(NEnd - NStart) / fs) * fs / lengthSound);
         loop (oneDWaveDynamic, 0, lengthSound, lengthSound, fs,  outputLocFromBoundary);

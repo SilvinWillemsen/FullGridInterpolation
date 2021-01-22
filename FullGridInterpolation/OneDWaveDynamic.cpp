@@ -11,7 +11,7 @@
 OneDWaveDynamic::OneDWaveDynamic (double startN, double endN,
                     double fs, double outLength,
                     double excitationLoc, double excitationWidth,
-                    double outputLocStart, DynamicInterpolationType dyIntType,
+                    double outputLocStart, DynamicInterpolationType dyIntType, bool even, bool shiftedIn,
                     SincInterpolVals& sIV, double lambdaMultiplier,
                     bool changeC, int numFromRightBound,
                     bool lpConnection, double lpExponent,
@@ -24,6 +24,8 @@ excitationLoc (excitationLoc),
 excitationWidth(excitationWidth),
 outputLocStart (outputLocStart),
 dyIntType (dyIntType),
+even (even),
+shifted (even ? false : shiftedIn),
 lambdaMultiplier (lambdaMultiplier),
 changeC (changeC), numFromRightBound (numFromRightBound),
 LFO (LFO), LFOFreq (LFOFreq),
@@ -163,7 +165,7 @@ sincWidth (sIV.sincWidth)
     if (sIV.sincWidth == -1)
         sincWidth = numFromRightBound + 1;
     
-    iLen = sincWidth * 2 + 1;
+    iLen = sincWidth * 2 + (even ? 1 : 0);
     xUMp1.resize (iLen, 0);
     
     bU = Eigen::VectorXd (iLen, 1);
@@ -180,7 +182,8 @@ sincWidth (sIV.sincWidth)
     NChange.open ("NChangeD.csv");
     lambdaSqSave.open ("lambdaSqSaveD.csv");
     alfTickSave.open ("alfTickSaveD.csv");
-    
+    aUSave.open ("aUSaveD.csv");
+
 }
 
 OneDWaveDynamic::~OneDWaveDynamic()
@@ -193,6 +196,7 @@ OneDWaveDynamic::~OneDWaveDynamic()
     NChange.close();
     lambdaSqSave.close();
     alfTickSave.close();
+    aUSave.close();
 }
 
 void OneDWaveDynamic::recalculateCoeffs (int n)
@@ -229,13 +233,14 @@ void OneDWaveDynamic::recalculateCoeffs (int n)
     NSave << NDouble << ";\n";
     
     alf = NDouble - N;
+    alfTickSave << alf << ";\n"; // using for alf instead of alfTick now
     if (N != NPrev)
     {
         NChange << NPrev << ", " << N << ";\n";
         if (abs(N - NPrev) > 1)
             std::cout << "too fast..?" << std::endl;
         alfTick = ((1.0-Mw * h) - ((Mu + 1) * h)) / h;
-        alfTickSave << alfTick << ";\n";
+//        alfTickSave << alfTick << ";\n";
         if (round(round(alfTick * 10) / 15.0) == 1)
             std::cout << alfTick - alf << std::endl;
         
@@ -300,11 +305,12 @@ void OneDWaveDynamic::calculateInterpolatedPoints()
             if (alf < 1e-6)
                 alf = 1e-6;
             
-            for (int i = 0; i < sincWidth; ++i)
-                xUMp1[i] = i-sincWidth;
-            for (int i = sincWidth; i < iLen; ++i)
-                xUMp1[i] = i - sincWidth + alf - 1;
 
+            for (int i = 0; i < sincWidth - (even ? 0 : 1); ++i)
+                xUMp1[i] = i-sincWidth + (even ? 0 : 1);
+            for (int i = sincWidth - (even ? 0 : 1); i < iLen; ++i)
+                xUMp1[i] = i - sincWidth + alf - (even ? 1 : 0);
+            
             for (int i = 0; i < iLen; ++i)
             {
                 if (xUMp1[i] == 0)
@@ -328,6 +334,9 @@ void OneDWaveDynamic::calculateInterpolatedPoints()
                 }
             }
             aU = AU.bdcSvd (Eigen::ComputeThinU | Eigen::ComputeThinV).solve(bU); // aU = AU\bU
+//            for (int i = 0; i < iLen; ++i)
+//                aUSave << aU[i] << ", ";
+//            aUSave << ";\n";
 
             for (int i = 0; i < iLen; ++i) // fliplr
                 aW[iLen - 1 - i] = aU[i];
@@ -355,7 +364,7 @@ void OneDWaveDynamic::calculateInterpolatedPoints()
             // Calculate virtual grid points
             for (int i = 0; i < rangeEnd; ++i)
             {
-                idx = Mu-sincWidth + i;
+                idx = Mu-sincWidth + i + (even || shifted ? 0 : 1);
                 if (idx < Mu)
                     uMuP1 += aU[i] * u[1][idx];
                 else
@@ -367,12 +376,26 @@ void OneDWaveDynamic::calculateInterpolatedPoints()
             
             for (int i = 0; i < fmin (rangeEnd + 1, iLen); ++i)
             {
-                idx = Mu-sincWidth-1 + i;
+                idx = Mu-sincWidth-(shifted ? 0 : 1) + i;
                 if (idx < Mu)
                     wMin1 += aW[i] * u[1][idx];
                 else
                     wMin1 += aW[i] * w[1][idx-Mu];
             }
+            break;
+        }
+        case dQuadratic:
+        {
+            alpha = (alf - 1.0) / (alf + 1.0);
+            beta = 1.0;
+            gamma = -(alf - 1.0) / (alf + 1.0);
+            
+            if (numFromRightBound != 1)
+                w1 = w[1][1];
+            
+            uMuP1 = alpha * u[1][Mu-1] + beta * w[1][0] + gamma * w1;
+            wMin1 = gamma * u[1][Mu-2] + beta * u[1][Mu-1] + alpha * w[1][0];
+            
             break;
         }
         case dCubic:
@@ -410,10 +433,49 @@ void OneDWaveDynamic::calculateInterpolatedPoints()
         }
         case dAltCubic:
         {
-            alpha = (alf - 1.0) / (alf + 2.0);
-            beta =  (alf + 1.0) / 2.0;
-            gamma = 1.0 - alf;
-            delta =  alf * (alf - 1.0) / (2.0 * (alf + 2.0));
+            if (shifted)
+            {
+                alpha = -(alf*(alf - 1.0))/((alf + 1.0)*(alf + 2.0));
+                beta = (2.0*(alf - 1.0))/(alf + 1.0);
+                gamma = 2.0/(alf + 1.0);
+                delta = -(2.0*(alf - 1.0))/((alf + 1.0)*(alf + 2.0));
+            } else {
+                alpha = (alf - 1.0) / (alf + 2.0);
+                beta =  (alf + 1.0) / 2.0;
+                gamma = 1.0 - alf;
+                delta =  alf * (alf - 1.0) / (2.0 * (alf + 2.0));
+            }
+            if (numFromRightBound > 2 || numFromRightBound == -1)
+            {
+                w2 = w[1][2];
+                w1 = w[1][1];
+            }
+            else if (numFromRightBound == 2)
+            {
+                w1 = w[1][1];
+            }
+            else if (numFromRightBound == 1)
+            {
+                w2 = -w[1][0];
+            }
+            
+            if (shifted) // use the same points for both virtual grid points
+            {
+                uMuP1 = alpha * u[1][Mu-2] + beta * u[1][Mu-1] + gamma * w[1][0] + delta * w1;
+                wMin1 = delta * u[1][Mu-2] + gamma * u[1][Mu-1] + beta * w[1][0] + alpha * w1;
+            } else {
+                uMuP1 = alpha * u[1][Mu-1] + beta * w[1][0] + gamma * w1 + delta * w2;
+                wMin1 = delta * u[1][Mu-3] + gamma * u[1][Mu-2] + beta * u[1][Mu-1] + alpha * w[1][0];
+            }
+            break;
+        }
+        case dQuartic:
+        {
+            alpha = -(alf*(alf - 1.0))/((alf + 2.0)*(alf + 3.0));
+            beta =  (2.0*(alf - 1.0))/(alf + 2.0);
+            gamma = 1.0;
+            delta =  -(2.0*(alf - 1.0))/(alf + 2.0);
+            epsilon = (alf*(alf - 1.0))/((alf + 2.0)*(alf + 3.0));
             
             if (numFromRightBound > 2 || numFromRightBound == -1)
             {
@@ -429,9 +491,8 @@ void OneDWaveDynamic::calculateInterpolatedPoints()
                 w2 = -w[1][0];
             }
             
-            uMuP1 = alpha * u[1][Mu-1] + beta * w[1][0] + gamma * w1 + delta * w2;
-            wMin1 = delta * u[1][Mu-3] + gamma * u[1][Mu-2] + beta * u[1][Mu-1] + alpha * w[1][0];
-
+            uMuP1 = alpha * u[1][Mu-2] + beta * u[1][Mu-1] + gamma * w[1][0] + delta * w1 + epsilon * w2;
+            wMin1 = epsilon * u[1][Mu-3] + delta * u[1][Mu-2] + gamma * u[1][Mu-1] + beta * w[1][0] + alpha * w1;
             break;
         }
         case dLinear:
@@ -637,9 +698,11 @@ void OneDWaveDynamic::createCustomIp()
             customIp[3] = 0;
             break;
         }
+        case dQuadratic:
         case dCubic:
         case dAltCubic:
         case dQuartic:
+        case dSinc:
         {
             customIp[0] = -alfTick * (alfTick + 1.0) / ((alfTick + 2.0) * (alfTick + 3.0));
             customIp[1] = 2.0 * alfTick / (alfTick + 2.0);
@@ -653,24 +716,24 @@ void OneDWaveDynamic::createCustomIp()
             break;
         }
             
-        case dSinc:
-        {
-            int custSincWidth = 2;
-            double custBMax = M_PI;
-            std::vector <double> xPosCustIp (4, 0);
-            
-            for (int i = 0; i < custSincWidth; ++i)
-                xPosCustIp[i] = i-custSincWidth;
-            for (int i = custSincWidth; i < custSincWidth * 2; ++i)
-                xPosCustIp[i] = i - custSincWidth + alf;
-            
-            for (int i = 0; i < custSincWidth * 2; ++i)
-                customIp[i] = sin(custBMax * xPosCustIp[i]) / (xPosCustIp[i] * custBMax);
-            
-            if (alf == 0)
-                customIp[custSincWidth] = 1;
-            break;
-        }
+//        case dSinc:
+//        {
+//            int custSincWidth = 2;
+//            double custBMax = M_PI;
+//            std::vector <double> xPosCustIp (4, 0);
+//
+//            for (int i = 0; i < custSincWidth; ++i)
+//                xPosCustIp[i] = i-custSincWidth;
+//            for (int i = custSincWidth; i < custSincWidth * 2; ++i)
+//                xPosCustIp[i] = i - custSincWidth + alf;
+//
+//            for (int i = 0; i < custSincWidth * 2; ++i)
+//                customIp[i] = sin(custBMax * xPosCustIp[i]) / (xPosCustIp[i] * custBMax);
+//
+//            if (alf == 0)
+//                customIp[custSincWidth] = 1;
+//            break;
+//        }
     }
 }
 

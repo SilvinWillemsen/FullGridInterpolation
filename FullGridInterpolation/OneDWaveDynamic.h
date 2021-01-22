@@ -19,6 +19,7 @@
 enum DynamicInterpolationType
 {
     dLinear,
+    dQuadratic,
     dCubic,
     dAltCubic,
     dQuartic,
@@ -40,7 +41,7 @@ public:
     OneDWaveDynamic (double startN, double endN,
               double fs, double outLength,
               double excitationLoc, double excitationWidth,
-              double outputLocStart, DynamicInterpolationType dyIntType,
+              double outputLocStart, DynamicInterpolationType dyIntType, bool even, bool shifted,
               SincInterpolVals& sIV,
               double lambdaMultiplier,
               bool changeC, int numFromRightBound,
@@ -89,7 +90,7 @@ private:
     // calculating interpolated points at the connection
     double a11, a12, a21, a22;
     double v1, v2;
-    double alpha, beta, gamma, delta, oOdet;
+    double alpha, beta, gamma, delta, epsilon, oOdet;
     
     std::vector<std::vector<double>> uVecs;
     std::vector<std::vector<double>> wVecs;
@@ -101,7 +102,7 @@ private:
 
     std::vector<double> customIp, customIp1;
     
-    std::ofstream stateAt, plotIdx, output, cSave, NSave, NChange, lambdaSqSave, alfTickSave;
+    std::ofstream stateAt, plotIdx, output, cSave, NSave, NChange, lambdaSqSave, alfTickSave, aUSave;
     
     int curPlotIdx = 1;
     
@@ -109,6 +110,8 @@ private:
     bool changeC;
     
     DynamicInterpolationType dyIntType;
+    bool even; // even or odd sync interpolation
+    bool shifted; // for odd lagrangian interpolation types
     int numFromRightBound;
     
     void (OneDWaveDynamic::*addRemovePoints)();
