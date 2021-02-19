@@ -48,7 +48,7 @@ void loop (OneDWaveDynamic& oneDWave, int start, int end, int lengthSound, doubl
         oneDWave.scheme();
         oneDWave.retrieveOutput (fs / 44100.0 * outputLocFromBoundary, false);
 //        if (int(n / 100.0) % int (fs) == 0)
-        if (n >= 0 * fs && n < 0*fs)
+        if (n < 1000)
         {
             oneDWave.retrieveStateU();
             oneDWave.retrieveStateW();
@@ -78,14 +78,14 @@ int main(int argc, const char * argv[]) {
     std::cout << "I'm in DEBUG!" << std::endl;
 #endif
     double fs = 44100;
-    double outLength = 2;
+    double outLength = 10;
     double lengthSound = fs * outLength;
-    double NStart = 15.0;
-    double NEnd = 20.0;
+    double NStart = 300;
+    double NEnd = 15;
     double lambdaMultiplier = 1;
     int outputLocFromBoundary = 1;
-    double excitationWidth = 0.2;
-    double excitationLoc = 1.0 / M_PI;
+    double excitationWidth = 0.25; //0.2
+    double excitationLoc = 0.2; //1.0 / M_PI;
     double outputLocStart = 0;
     
     std::string version = "D"; // [I]nterpolation, [D]ynamic or [B]oth
@@ -112,7 +112,7 @@ int main(int argc, const char * argv[]) {
     curVersion << version;
     curVersion.close();
     
-    SincInterpolVals sIV (2, 0.8); // sincWidth, alphaBandwidth. If sincWidth == -1, this results in using numFromRightBound + 1. If also numFromRightBound == -1, it uses the entire range.
+    SincInterpolVals sIV (2, 1); // sincWidth, alphaBandwidth. If sincWidth == -1, this results in using numFromRightBound + 1. If also numFromRightBound == -1, it uses the entire range.
     
     if (version == "I" || version == "B")
     {
@@ -133,14 +133,14 @@ int main(int argc, const char * argv[]) {
                                          fs, outLength,
                                          excitationLoc, excitationWidth,
                                          outputLocStart,
-                                         dSinc, false   , false, // interpolation type, even, shifted?
+                                         dQuadratic, false, false, // interpolation type, even, shifted?
                                          sIV,
                                          lambdaMultiplier,
-                                         true, numFromRightBound, //change C (or N)
-                                         true, 50,  // Low-pass the connection? And with what exponent?
+                                         false, numFromRightBound, //change C (or N)
+                                         true, 30, 0,  // Low-pass the connection? And with what exponent?, And after how many seconds?
                                          false, 5); // LFO wavespeed/number of points? Freq
 //        ,0.5 * fs / lengthSound, (0.5 + 3*abs(NEnd - NStart) / fs) * fs / lengthSound);
-        loop (oneDWaveDynamic, 0, lengthSound, lengthSound, fs,  outputLocFromBoundary);
+        loop (oneDWaveDynamic, 0, lengthSound, lengthSound, fs, outputLocFromBoundary);
         std::cout << "Done with dynamic version" << std::endl;
 
     }

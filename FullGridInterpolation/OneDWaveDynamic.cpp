@@ -14,7 +14,7 @@ OneDWaveDynamic::OneDWaveDynamic (double startN, double endN,
                     double outputLocStart, DynamicInterpolationType dyIntType, bool even, bool shiftedIn,
                     SincInterpolVals& sIV, double lambdaMultiplier,
                     bool changeC, int numFromRightBound,
-                    bool lpConnection, double lpExponent,
+                    bool lpConnection, double lpExponent, double lpDelay,
                     bool LFO, double LFOFreq,
                     double changeS, double changeE) :
 lengthSound (outLength * fs),
@@ -33,9 +33,11 @@ changeStart (round(changeS * lengthSound)),
 changeEnd (round(changeE * lengthSound)),
 lpConnection (lpConnection),
 lpExponent (lpExponent),
+lpDelay (lpDelay),
 sIV (sIV),
 sincWidth (sIV.sincWidth)
 {
+    bool initWithDiffAtConn = false;
     
     lengthSound = outLength * fs;
     
@@ -63,11 +65,12 @@ sincWidth (sIV.sincWidth)
     lambdaSq = lambdaMultiplier * c * c * k * k / (h * h);
     
     
-    if (numFromRightBound > N*0.5) // only add at right boundary
-    {
-        stopSimulation = true;
-        return;
-    }
+//    if (numFromRightBound > N*0.5) // only add at right boundary
+//    {
+//        stopSimulation = true;
+//        std::cout << "NumFromRightBound is too large" << std::endl;
+//        return;
+//    }
     
     // Resize u and w vecs according to where points are added
     switch (numFromRightBound)
@@ -102,38 +105,45 @@ sincWidth (sIV.sincWidth)
         u[i] = &uVecs[i][0];
         w[i] = &wVecs[i][0];
     }
-    
-    double loc = excitationLoc * N;
-    int width = std::max (4.0, excitationWidth * N);
-    int raisedCosStart = floor (loc - width * 0.5) - 1;
-    
-    int raisedCosEnd = floor (loc + width * 0.5) - 1 - std::min(raisedCosStart, 0);
-    raisedCosStart = raisedCosStart - std::min(raisedCosStart, 0);
-    // should probably also do this for the right bound
-    
-    // check if overlap is part of raised cos
-    if (raisedCosStart <= Mu && raisedCosEnd >= Mu)
+    if (initWithDiffAtConn)
     {
-        std::cout << "Overlap!" << std::endl;
-        stopSimulation = true;
-        return;
-    }
-    else if (raisedCosEnd < Mu)
-    {
-        for (int i = raisedCosStart; i <= raisedCosEnd; ++i)
+        uVecs[1][Mu-1] = 0.5;
+        wVecs[1][0] = -0.5;
+//        uVecs[2][Mu-1] = 0.5;
+//        wVecs[2][0] = -0.5;
+    } else {
+        double loc = excitationLoc * N;
+        int width = std::max (4.0, excitationWidth * N);
+        int raisedCosStart = floor (loc - width * 0.5) - 1;
+        
+        int raisedCosEnd = floor (loc + width * 0.5) - 1 - std::min(raisedCosStart, 0);
+        raisedCosStart = raisedCosStart - std::min(raisedCosStart, 0);
+        // should probably also do this for the right bound
+        
+        // check if overlap is part of raised cos
+        if (raisedCosStart <= Mu && raisedCosEnd >= Mu)
         {
-            u[1][i] = 0.5 * (1 - cos (2.0 * M_PI * (i-raisedCosStart) / width));
-            u[2][i] = u[1][i];
+            std::cout << "Overlap!" << std::endl;
+            stopSimulation = true;
+            return;
         }
-    }
-    else if (raisedCosEnd > Mu)
-    {
-        raisedCosStart -= Mu;
-        raisedCosEnd -= Mu;
-        for (int i = raisedCosStart; i <= raisedCosEnd; ++i)
+        else if (raisedCosEnd < Mu)
         {
-            w[1][i] = 0.5 * (1 - cos (2.0 * M_PI * (i-raisedCosStart) / width));
-            w[2][i] = w[1][i];
+            for (int i = raisedCosStart; i <= raisedCosEnd; ++i)
+            {
+                u[1][i] = 0.5 * (1 - cos (2.0 * M_PI * (i-raisedCosStart) / width));
+                u[2][i] = u[1][i];
+            }
+        }
+        else if (raisedCosStart > Mu)
+        {
+            raisedCosStart -= Mu;
+            raisedCosEnd -= Mu;
+            for (int i = raisedCosStart; i <= raisedCosEnd; ++i)
+            {
+                w[1][i] = 0.5 * (1 - cos (2.0 * M_PI * (i-raisedCosStart) / width));
+                w[2][i] = w[1][i];
+            }
         }
     }
     
@@ -261,10 +271,7 @@ void OneDWaveDynamic::recalculateCoeffs (int n)
 //    }    
     NPrev = N;
     
-    if (lpConnection)
-        lpPoints();
     calculateInterpolatedPoints();
-
     
     B0 = 2.0 - 2.0 * lambdaSq;
     B1 = lambdaSq;
@@ -328,7 +335,7 @@ void OneDWaveDynamic::calculateInterpolatedPoints()
                         AU(i, j) = bmax;
                         continue;
                     }
-                    
+           
                     dist = xUMp1[i] - xUMp1[j];
                     AU(i, j) = sin (bmax*dist) / dist;
                 }
@@ -395,7 +402,7 @@ void OneDWaveDynamic::calculateInterpolatedPoints()
             
             uMuP1 = alpha * u[1][Mu-1] + beta * w[1][0] + gamma * w1;
             wMin1 = gamma * u[1][Mu-2] + beta * u[1][Mu-1] + alpha * w[1][0];
-            
+
             break;
         }
         case dCubic:
@@ -534,6 +541,9 @@ void OneDWaveDynamic::scheme()
     w[0][0] = B0 * w[1][0] + B1 * (w1 + wMin1) + C * w[2][0];
     if (numFromRightBound != 1)
         w[0][Mw-1] = B0 * w[1][Mw-1] + B1 * w[1][Mw-2] + C * w[2][Mw-1];
+
+    if (lpConnection)
+        lpPoints();
     
 }
 
@@ -610,6 +620,16 @@ void OneDWaveDynamic::addRemoveInCenter()
         }
         else
         {
+            // save w0 (and prev) beforehand, otherwise things will be overwritten
+            double w0 = customIp[3] * u[1][Mu-2]
+                + customIp[2] * u[1][Mu-1]
+                + customIp[1] * w[1][0]
+                + customIp[0] * w[1][1];
+            double w0Prev = customIp[3] * u[2][Mu-2]
+                + customIp[2] * u[2][Mu-1]
+                + customIp[1] * w[2][0]
+                + customIp[0] * w[2][1];
+
             // move w vector one up (can be optimised)
             for (int l = Mw-1; l >= 0; --l)
             {
@@ -617,14 +637,8 @@ void OneDWaveDynamic::addRemoveInCenter()
                 w[2][l+1] = w[2][l];
                 
             }
-            w[1][0] = customIp[3] * u[1][Mu-2]
-            + customIp[2] * u[1][Mu-1]
-            + customIp[1] * w[1][0]
-            + customIp[0] * w[1][1];
-            w[2][0] = customIp[3] * u[2][Mu-2]
-            + customIp[2] * u[2][Mu-1]
-            + customIp[1] * w[2][0]
-            + customIp[0] * w[2][1];
+            w[1][0] = w0;
+            w[2][0] = w0Prev;
             ++Mw;
         }
     } else {
@@ -702,13 +716,14 @@ void OneDWaveDynamic::createCustomIp()
         case dCubic:
         case dAltCubic:
         case dQuartic:
-        case dSinc:
+//        case dSinc:
         {
             customIp[0] = -alfTick * (alfTick + 1.0) / ((alfTick + 2.0) * (alfTick + 3.0));
             customIp[1] = 2.0 * alfTick / (alfTick + 2.0);
             customIp[2] = 2.0 / (alfTick + 2.0);
             customIp[3] = -2.0 * alfTick / ((alfTick + 3.0) * (alfTick + 2.0));
-        
+//            if (alf-alfTick != 0)
+//                std::cout << "alf: " << alf << " alfTick " << alfTick << std::endl;
             //            customIp1[3] = alf * (alf - 1) * (alf - 2) / -6.0;
             //            customIp1[2] = (alf - 1) * (alf + 1) * (alf - 2) / 2.0;
             //            customIp1[1] = alf * (alf + 1) * (alf - 2) / -2.0;
@@ -716,31 +731,42 @@ void OneDWaveDynamic::createCustomIp()
             break;
         }
             
-//        case dSinc:
-//        {
-//            int custSincWidth = 2;
-//            double custBMax = M_PI;
-//            std::vector <double> xPosCustIp (4, 0);
-//
-//            for (int i = 0; i < custSincWidth; ++i)
-//                xPosCustIp[i] = i-custSincWidth;
-//            for (int i = custSincWidth; i < custSincWidth * 2; ++i)
-//                xPosCustIp[i] = i - custSincWidth + alf;
-//
-//            for (int i = 0; i < custSincWidth * 2; ++i)
-//                customIp[i] = sin(custBMax * xPosCustIp[i]) / (xPosCustIp[i] * custBMax);
-//
-//            if (alf == 0)
-//                customIp[custSincWidth] = 1;
-//            break;
-//        }
+        case dSinc:
+        {
+            int custSincWidth = 2;
+            double custBMax = M_PI;
+            std::vector <double> xPosCustIp (4, 0);
+
+            for (int i = 0; i < custSincWidth; ++i)
+                xPosCustIp[i] = i-custSincWidth;
+            for (int i = custSincWidth; i < custSincWidth * 2; ++i)
+                xPosCustIp[i] = i - custSincWidth + alf;
+
+            for (int i = 0; i < custSincWidth * 2; ++i)
+                customIp[i] = sin(custBMax * xPosCustIp[i]) / (xPosCustIp[i] * custBMax);
+
+            if (alf == 0)
+                customIp[custSincWidth] = 1;
+            break;
+        }
     }
 }
 
 void OneDWaveDynamic::lpPoints()
 {
-    double diffAtConn = w[1][0] - u[1][Mu-1];
-    double lpCoeff = pow (1-alf, lpExponent);
-    u[1][Mu-1] = u[1][Mu-1] + lpCoeff * diffAtConn * 0.5;
-    w[1][0] = w[1][0] - lpCoeff * diffAtConn * 0.5;
+//    double diffAtConn = w[1][0] - u[1][Mu-1];
+//    double lpCoeff = pow (1-alf, lpExponent);
+//    u[1][Mu-1] = u[1][Mu-1] + lpCoeff * diffAtConn * 0.5;
+//    w[1][0] = w[1][0] - lpCoeff * diffAtConn * 0.5;
+    
+    double etaPrev = (w[2][0] - u[2][Mu-1]) * 0.5;
+    double sig0 = 2.0;
+    double rForce = (1.0 - sig0 / k) / (1.0 + sig0 / k);
+    double oOP = (h * (1.0 + sig0 / k) * (1.0-alf)) / (2.0 * h * alf + k * k * (1.0 + sig0 / k) * (1.0-alf));
+    
+    double F = ((w[0][0] - u[0][Mu-1]) * 0.5 + rForce * etaPrev) * oOP;
+    
+    u[0][Mu-1] += k*k/h * F;
+    w[0][0] -= k*k/h * F;
+
 }

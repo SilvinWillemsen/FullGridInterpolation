@@ -45,7 +45,7 @@ public:
               SincInterpolVals& sIV,
               double lambdaMultiplier,
               bool changeC, int numFromRightBound,
-              bool lpConnection, double lpExponent,
+              bool lpConnection, double lpExponent, double lpDelay,
               bool LFO, double LFOfreq = 0,
               double changeS = 0, double changeE = 1);
     /*
@@ -125,7 +125,7 @@ private:
     // LowPass the connection
     bool lpConnection;
     double lpExponent;
-    
+    double lpDelay;
     
     SincInterpolVals sIV;
     int sincWidth, iLen;
